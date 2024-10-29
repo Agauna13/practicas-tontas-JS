@@ -1,52 +1,80 @@
-function formatTime() {
-    let now = new Date(); // Obtiene la fecha y hora actuales en cada llamada
-    let h = now.getHours();
-    let m = now.getMinutes();
-    let s = now.getSeconds();
+// script.js
 
-    return `${h}h ${m}m ${s}s`;
+import { eventos } from './eventos.js';
+
+// Función para buscar eventos
+function buscarEventos() {
+    const query = document.getElementById("busqueda").value.toLowerCase();
+    const resultadosDiv = document.getElementById("resultados");
+
+    resultadosDiv.innerHTML = ""; // Limpiar los resultados anteriores
+
+    // Filtrar eventos según la búsqueda
+    const resultados = eventos.filter(evento => {
+        return (
+            evento.nombreConcierto.toLowerCase().includes(query) ||
+            evento.artista.toLowerCase().includes(query) ||
+            evento.fecha.includes(query) ||
+            evento.genero.toLowerCase().includes(query)
+        );
+    });
+
+    // Mostrar resultados
+    if (resultados.length > 0) {
+        resultados.forEach(evento => {
+            const eventoDiv = document.createElement("div");
+            eventoDiv.classList.add("resultado-item");
+            eventoDiv.innerHTML = `
+                <h3>${evento.nombreConcierto}</h3>
+                <p><strong>Artista:</strong> ${evento.artista}</p>
+                <p><strong>Fecha:</strong> ${evento.fecha}</p>
+                <p><strong>Género:</strong> ${evento.genero}</p>
+                <p><strong>Lugar:</strong> ${evento.lugar}</p>
+            `;
+            resultadosDiv.appendChild(eventoDiv);
+        });
+    } else {
+        resultadosDiv.innerHTML = "<p>No se encontraron eventos.</p>";
+    }
 }
 
-// Llama a formatTime cada segundo y actualiza el contenido de #ahora
-setInterval(() => {
-    document.getElementById('ahora').innerHTML = formatTime();
-}, 1000);
+// Asigna la función buscarEventos al botón usando el ID
+document.getElementById("buscar-btn").addEventListener("click", buscarEventos);
 
 
 
 
-/*
-    <p id="demo"></p>
+function obtenerEventosProximos() {
+    const hoy = new Date();
+    const proximosEventos = eventos.filter(evento => {
+        const fechaEvento = new Date(evento.fecha);
+        const diferenciaDias = (fechaEvento - hoy) / (1000 * 60 * 60 * 24);
+        return diferenciaDias <= 7 && diferenciaDias > 0;
+    });
 
-    <script>
-        // Set the date we're counting down to
-        var countDownDate = new Date("Jul 7, 2025 00:00:00").getTime();
+    // Actualizar el número de notificaciones
+    document.getElementById("notificaciones-numero").textContent = proximosEventos.length;
 
-        // Update the count down every 1 second
-        var x = setInterval(function () {
+    // Mostrar la lista de notificaciones
+    const notificacionesLista = document.getElementById("notificaciones-lista");
+    notificacionesLista.innerHTML = ""; // Limpiar notificaciones anteriores
+    proximosEventos.forEach(evento => {
+        const notificacion = document.createElement("p");
+        notificacion.textContent = `${evento.nombreConcierto} - ${evento.fecha} en ${evento.lugar}`;
+        notificacionesLista.appendChild(notificacion);
+    });
+}
 
-            // Get today's date and time
-            var now = new Date().getTime();
+// Mostrar u ocultar la lista de notificaciones
+function mostrarNotificaciones() {
+    const notificacionesLista = document.getElementById("notificaciones-lista");
+    notificacionesLista.classList.toggle("oculto");
+}
 
-            // Find the distance between now and the count down date
-            var distance = countDownDate - now;
+// Ejecutar la función de obtener eventos próximos al cargar la página
+obtenerEventosProximos();
 
-            // Time calculations for days, hours, minutes and seconds
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+// Asigna la función buscarEventos al botón usando el ID
+document.getElementById("buscar-btn").addEventListener("click", buscarEventos);
 
-            // Display the result in the element with id="demo"
-            document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-                + minutes + "m " + seconds + "s ";
-
-            // If the count down is finished, write some text
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("demo").innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    </script>
-
-*/
+document.getElementById('notificaciones-numero').addEventListener("click", mostrarNotificaciones);
