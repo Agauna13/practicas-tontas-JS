@@ -9,26 +9,38 @@
 </head>
 
 <body>
-
-    <div class="dashboard">
-        <h1>Buscador de Eventos</h1>
-        <input type="text" id="busqueda" placeholder="Buscar por nombre, artista, fecha o género">
-        <button id="buscar-btn">Buscar</button>
-        <div id="resultados"></div>
-
-        <div id="notificaciones" >
-            <span id="notificaciones-numero" class="notificacion-numero">0</span> <!-- Número de notificaciones -->
-            🔔 Notificaciones
+    <nav>
+        <div class="dashboard">
+            <h2>Dashboard</h2>
+    
+    
+            <div class="buscador">
+                <input type="text" id="busqueda" placeholder="Buscar por nombre, artista, fecha o género">
+                <button id="buscar-btn">Buscar</button>
+            </div>
+    
+    
+    
+            <div id="notificaciones">
+                <div class="putaCampanita"><span id="notificaciones-numero" class="notificacion-numero">0</span>🔔</div>
+                
+            </div>
+            
+            <div id="notificaciones-lista" class="notificaciones-lista oculto">
+            </div>
+    
+    
+    
         </div>
-        <div id="notificaciones-lista" class="notificaciones-lista">
+    
+    </nav>
+    
+    
 
-        </div>
-        
-
-        </div>
+    <div id="resultados">
 
     </div>
-
+    
 
 
 

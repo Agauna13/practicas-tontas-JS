@@ -1,15 +1,11 @@
-// script.js
-
 import { eventos } from './eventos.js';
 
-// Función para buscar eventos
+
 function buscarEventos() {
     const query = document.getElementById("busqueda").value.toLowerCase();
     const resultadosDiv = document.getElementById("resultados");
 
-    resultadosDiv.innerHTML = ""; // Limpiar los resultados anteriores
-
-    // Filtrar eventos según la búsqueda
+    resultadosDiv.innerHTML = "";
     const resultados = eventos.filter(evento => {
         return (
             evento.nombreConcierto.toLowerCase().includes(query) ||
@@ -19,7 +15,6 @@ function buscarEventos() {
         );
     });
 
-    // Mostrar resultados
     if (resultados.length > 0) {
         resultados.forEach(evento => {
             const eventoDiv = document.createElement("div");
@@ -37,8 +32,6 @@ function buscarEventos() {
         resultadosDiv.innerHTML = "<p>No se encontraron eventos.</p>";
     }
 }
-
-// Asigna la función buscarEventos al botón usando el ID
 document.getElementById("buscar-btn").addEventListener("click", buscarEventos);
 
 
@@ -52,12 +45,11 @@ function obtenerEventosProximos() {
         return diferenciaDias <= 7 && diferenciaDias > 0;
     });
 
-    // Actualizar el número de notificaciones
     document.getElementById("notificaciones-numero").textContent = proximosEventos.length;
 
-    // Mostrar la lista de notificaciones
+
     const notificacionesLista = document.getElementById("notificaciones-lista");
-    notificacionesLista.innerHTML = ""; // Limpiar notificaciones anteriores
+    notificacionesLista.innerHTML = "";
     proximosEventos.forEach(evento => {
         const notificacion = document.createElement("p");
         notificacion.textContent = `${evento.nombreConcierto} - ${evento.fecha} en ${evento.lugar}`;
@@ -65,16 +57,14 @@ function obtenerEventosProximos() {
     });
 }
 
-// Mostrar u ocultar la lista de notificaciones
 function mostrarNotificaciones() {
     const notificacionesLista = document.getElementById("notificaciones-lista");
     notificacionesLista.classList.toggle("oculto");
 }
 
-// Ejecutar la función de obtener eventos próximos al cargar la página
+
 obtenerEventosProximos();
 
-// Asigna la función buscarEventos al botón usando el ID
 document.getElementById("buscar-btn").addEventListener("click", buscarEventos);
 
 document.getElementById('notificaciones-numero').addEventListener("click", mostrarNotificaciones);
